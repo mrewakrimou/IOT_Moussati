@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cold Chain Monitoring</title>
+    <!-- Importation de Tailwind CSS pour le design -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Importation de FontAwesome pour les icônes -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Ajout de légers dégradés pour imiter les vagues en arrière-plan des cartes */
+        .bg-temp-wave { background: linear-gradient(135deg, #ffffff 60%, #fff1f2 100%); }
+        .bg-hum-wave { background: linear-gradient(135deg, #ffffff 60%, #eff6ff 100%); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans flex h-screen overflow-hidden">
+
+    <!-- Menu Latéral (Sidebar) -->
+    <aside class="w-64 bg-slate-900 text-slate-300 flex flex-col justify-between">
+        <div>
+            <!-- Logo -->
+            <div class="p-6 flex items-center space-x-3 text-white">
+                <i class="fa-regular fa-snowflake text-2xl text-blue-400"></i>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight">Cold Chain</h1>
+                    <p class="text-xs text-slate-400">Monitoring</p>
+                </div>
+            </div>
+            <!-- Navigation -->
+            <nav class="px-4 space-y-2 mt-4">
+                <a href="#" class="flex items-center space-x-3 bg-slate-800 text-white px-4 py-3 rounded-xl transition">
+                    <i class="fa-solid fa-border-all w-5 text-center"></i>
+                    <span class="font-medium">Dashboard</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
+                    <i class="fa-regular fa-clock w-5 text-center"></i>
+                    <span class="font-medium">Historique</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
+                    <i class="fa-solid fa-gear w-5 text-center"></i>
+                    <span class="font-medium">Paramètres</span>
+                </a>
+            </nav>
+        </div>
+        <!-- Footer Sidebar -->
+        <div class="p-6 text-sm">
+            <div class="flex items-center space-x-2 text-white mb-3">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span>Système actif</span>
+            </div>
+            <div class="flex space-x-2 text-slate-500">
+                <i class="fa-solid fa-shield-halved mt-1"></i>
+                <p class="text-xs">La qualité de vos produits en temps réel</p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Contenu Principal -->
+    <main class="flex-1 flex flex-col p-8 overflow-y-auto">
+
+        <!-- En-tête (Header) -->
+        <header class="flex justify-between items-end mb-8">
+            <div>
+                <h2 class="text-3xl font-bold text-slate-900 mb-1">Cold Chain Monitoring</h2>
+                <p class="text-slate-500">Surveillance de la température et de l'humidité</p>
+            </div>
+            <div class="flex items-center space-x-6">
+                <div class="flex items-center space-x-2 bg-white px-4 py-2 rounded-full shadow-sm">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                    <span class="text-sm font-medium text-slate-700">Système actif</span>
+                </div>
+                <div class="flex items-center space-x-3 text-right">
+                    <i class="fa-regular fa-clock text-slate-400 text-xl"></i>
+                    <div class="text-sm">
+                        <p class="text-slate-400 text-xs">Dernière mesure :</p>
+                        <p class="font-medium text-slate-700" id="last-time-header">--:--:--</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Cartes Principales -->
+        <div class="grid grid-cols-2 gap-6 mb-6">
+            <!-- Carte Température -->
+            <div class="bg-temp-wave rounded-2xl shadow-sm border border-slate-100 p-8 relative">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-red-500 text-xl">
+                            <i class="fa-solid fa-temperature-half"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-slate-800">Température</h3>
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center text-red-400">
+                        <i class="fa-solid fa-arrow-trend-up text-sm"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <span class="text-5xl font-bold text-slate-800" id="val-temp">--</span>
+                    <span class="text-3xl font-semibold text-slate-800"> °C</span>
+                </div>
+            </div>
+
+            <!-- Carte Humidité -->
+            <div class="bg-hum-wave rounded-2xl shadow-sm border border-slate-100 p-8 relative">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-500 text-xl">
+                            <i class="fa-solid fa-droplet"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-slate-800">Humidité</h3>
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-400">
+                        <i class="fa-solid fa-arrow-trend-up text-sm"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <span class="text-5xl font-bold text-slate-800" id="val-hum">--</span>
+                    <span class="text-3xl font-semibold text-slate-800"> %</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Barre d'informations secondaires -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex justify-between items-center mb-6">
+            <div class="flex space-x-12">
+                <div class="flex items-center space-x-4">
+                    <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-500">
+                        <i class="fa-regular fa-clock"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-400 mb-0.5">Dernière mesure</p>
+                        <p class="font-semibold text-slate-800" id="last-measure">--</p>
+                    </div>
+                </div>
+                <!-- Séparateur vertical -->
+                <div class="w-px h-10 bg-slate-100"></div>
+                <div class="flex items-center space-x-4">
+                    <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-500">
+                        <i class="fa-regular fa-calendar"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-400 mb-0.5">Donnée reçue il y a</p>
+                        <p class="font-semibold text-slate-800"><span id="time-ago">--</span> secondes</p>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="fetchData()" class="bg-slate-700 hover:bg-slate-800 text-white px-6 py-2.5 rounded-xl font-medium transition flex items-center space-x-2">
+                <i class="fa-solid fa-rotate"></i>
+                <span>Rafraîchir manuellement</span>
+            </button>
+        </div>
+
+        <!-- Bannière d'erreur (masquée par défaut, s'affiche via JS) -->
+        <div id="error-banner" class="hidden bg-red-50 border border-red-200 rounded-2xl p-5 flex items-start space-x-4">
+            <div class="text-red-500 mt-0.5">
+                <i class="fa-solid fa-circle-exclamation text-xl"></i>
+            </div>
+            <div>
+                <h4 class="font-semibold text-red-700">Erreur</h4>
+                <p class="text-red-600 text-sm mt-1" id="error-text">Unexpected token '<', "<!DOCTYPE "... is not valid JSON</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Script JavaScript pour l'affichage dynamique -->
+    <script>
+        function fetchData() {
+            // Assurez-vous que cette URL est correcte (ajoutez bien le slash à la fin)
+            fetch('/dht/latest/')
+                .then(response => {
+                    if (!response.ok) throw new Error("Erreur réseau");
+                    return response.json();
+                })
+                .then(data => {
+                    // Cacher la bannière d'erreur si tout va bien
+                    document.getElementById('error-banner').classList.add('hidden');
+
+                    // Mise à jour des valeurs
+                    document.getElementById('val-temp').innerText = data.temperature;
+                    document.getElementById('val-hum').innerText = data.humidity;
+
+                    // Mise à jour de l'heure
+                    let date = new Date(data.timestamp);
+                    let timeString = date.toLocaleTimeString('fr-FR');
+                    document.getElementById('last-time-header').innerText = `aujourd'hui à ${timeString}`;
+                    document.getElementById('last-measure').innerText = timeString;
+
+                    // (Optionnel) Logique pour "Donnée reçue il y a X secondes"
+                    document.getElementById('time-ago').innerText = "0";
+                })
+                .catch(error => {
+                    // Afficher la bannière d'erreur
+                    document.getElementById('error-banner').classList.remove('hidden');
+                    document.getElementById('error-text').innerText = error.message;
+                    console.error("Erreur:", error);
+                });
+        }
+
+        // Lancer la fonction au chargement et toutes les 10 secondes
+        window.onload = fetchData;
+        setInterval(fetchData, 10000);
+    </script>
+</body>
+</html>
